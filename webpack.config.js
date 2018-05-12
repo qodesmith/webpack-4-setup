@@ -5,7 +5,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const PurgecssPlugin = require('purgecss-webpack-plugin')
 const whitelister = require('purgecss-whitelister')
-const glob = require('glob-all')
+const globAll = require('glob-all')
 
 
 module.exports = (env, argv) => ({
@@ -280,15 +280,16 @@ module.exports = (env, argv) => ({
     env.prod && new PurgecssPlugin({
       keyframes: false, // https://goo.gl/bACbDW
       styleExtensions: ['.css'],
-      paths: glob.sync([
-        path.resolve(__dirname, 'src/**/*.js'),
-        path.resolve(__dirname, 'src/index.ejs')
-      ]),
+      paths: globAll.sync([
+        './src/**/*.js',
+        './src/**/*.jsx',
+        './src/index.ejs'
+      ], { absolute: true }),
 
       /*
         Optionally whitelist 3rd party libraries.
         Example:
-          whitelist: whitelister(path.resolve(__dirname, 'node_modules/library/styles.css'))
+          whitelist: whitelister('./node_modules/library/styles.css')
       */
     })
   ].filter(Boolean),
